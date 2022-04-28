@@ -1,0 +1,32 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard:
+    layout: en
+    variant: us
+  early-commands:
+    # Stop packer from failing out on SSH attempts to the openssh-server daemon started by subiquity
+    - systemctl stop ssh
+  ssh:
+    install-server: true
+    allow-pw: true
+  packages:
+    - open-vm-tools
+  storage:
+    layout:
+      name: direct
+    swap:
+      size: 0
+  user-data:
+    package_upgrade: true
+    timezone: America/Toronto
+    users:
+      - name: ubuntu
+        passwd: $6$rounds=4096$Nci6wxKMLrAW$Ce6NlV5SSy1iE1EOUHIK0YLyRmnmbvRKBSBbXVsAiBGH9AcRDm.4RxEOO/skqa6ydzvR4VKKKgHnhyfPQ5Xlm1
+        groups: [adm, cdrom, dip, plugdev, lxd, sudo]
+        lock-passwd: false
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP5bJtNhqviYi9IIXB70nWg3UyH7+WrF5qvAtjDxU6r1 connor@dev
