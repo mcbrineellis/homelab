@@ -1,7 +1,7 @@
 locals {
   build_by      = "Built by: HashiCorp Packer ${packer.version}"
   build_date    = formatdate("YYYY-MM-DD hh:mm ZZZ", timestamp())
-  build_version = formatdate("YY.MM.hh.mm", timestamp())
+  build_version = formatdate("MMDD.hhmm", timestamp())
 }
 
 source "vsphere-iso" "ubuntu" {
