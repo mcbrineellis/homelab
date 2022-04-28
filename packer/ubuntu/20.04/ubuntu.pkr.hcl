@@ -76,7 +76,8 @@ build {
 
   provisioner "shell" {
     inline = [
-      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 10; done"
+      "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 10; done",
+      "sudo rm -rf /etc/netplan/*.yaml"
     ]
   }
 }
