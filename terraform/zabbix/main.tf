@@ -46,13 +46,14 @@ data "vsphere_virtual_machine" "ubuntu-template" {
 }
 
 resource "vsphere_virtual_machine" "zabbix" {
-    name                = "zabbix4"
+    name                = var.guest_host_name
     resource_pool_id    = data.vsphere_compute_cluster.cluster.resource_pool_id
     datastore_id        = data.vsphere_datastore.datastore.id
     folder              = var.vsphere_folder
 
     num_cpus = var.vm_cpu_cores
     memory   = var.vm_mem_size
+    firmware = data.vsphere_virtual_machine.ubuntu-template.firmware
     guest_id = "ubuntu64Guest"
 
     network_interface {
@@ -67,5 +68,16 @@ resource "vsphere_virtual_machine" "zabbix" {
 
     clone {
         template_uuid = data.vsphere_virtual_machine.ubuntu-template.id
+        customize {
+            linux_options {
+                host_name = var.guest_host_name
+                domain = "lab.hyperact.ca"
+            }
+            network_interface {
+                ipv4_address = var.guest_ipv4_address
+                ipv4_netmask = var.guest_ipv4_netmask
+            }
+            ipv4_gateway = var.guest_ipv4_gateway
+        }
     }
 }

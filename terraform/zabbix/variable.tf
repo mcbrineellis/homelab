@@ -66,6 +66,23 @@ variable "vsphere_network" {
 }
 
 variable "vm_template_version" {
-  type    = string
+  type        = string
   description = "Version of source template VM."
+}
+
+variable "guest_ipv4_address" {
+  type = string
+}
+
+variable "guest_ipv4_netmask" {
+  type = string
+}
+
+variable "guest_ipv4_gateway" {
+  type = string
+}
+
+variable "guest_host_name" {
+  type = string
+  description = "The hostname of the guest we are creating."
 }

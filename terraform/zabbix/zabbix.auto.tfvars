@@ -10,3 +10,7 @@ vm_guest_os_name    = "ubuntu"
 vm_guest_os_version = "22.04-lts"
 vm_cpu_cores        = 1
 vm_mem_size         = 2048
+guest_ipv4_address  = "192.168.1.201"
+guest_ipv4_netmask  = "24"
+guest_ipv4_gateway  = "192.168.1.254"
+guest_host_name     = "zabbix4"
