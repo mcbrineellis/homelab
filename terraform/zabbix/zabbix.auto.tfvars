@@ -1,0 +1,12 @@
+vcenter_server      = "vcsa.lab.hyperact.ca"
+vsphere_folder      = "terraform"
+vsphere_datacenter  = "lab"
+vsphere_cluster     = "labcl"
+vsphere_datastore   = "ssd"
+vsphere_network     = "mgmt"
+vm_template_version = "v0428.1957"
+vm_guest_os_family  = "linux"
+vm_guest_os_name    = "ubuntu"
+vm_guest_os_version = "22.04-lts"
+vm_cpu_cores        = 1
+vm_mem_size         = 2048
