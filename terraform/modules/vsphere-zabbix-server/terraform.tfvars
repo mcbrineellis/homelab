@@ -4,4 +4,4 @@ remote_commands = [
     "sudo apt install python3 -y",
     "echo Done!"
 ]
-playbook_path   = "../../ansible/zabbix/zabbix-server-install.yml"
+playbook_path   = "../../ansible/zabbix/zabbix-server.yml"
