@@ -35,7 +35,7 @@ module "zabbix-server" {
     vm_ipv4_address     = "192.168.1.201"
     vm_ipv4_netmask     = "24"
     vm_ipv4_gateway     = "192.168.1.254"
-    vm_ipv4_dns_servers = [
+    vm_dns_server_list  = [
         "192.168.1.254"
     ]
     vm_host_name        = "zabbix4"
