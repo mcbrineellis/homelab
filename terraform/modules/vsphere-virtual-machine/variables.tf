@@ -68,6 +68,11 @@ variable "vm_domain" {
   description = "The domain suffix of the guest. (e.g. 'lab.hyperact.ca')"
 }
 
+variable "vm_dns_server_list" {
+  type        = list
+  description = "List of DNS servers for the VM."
+}
+
 variable "vm_guest_id" {
   type        = string
   description = "The VMware guest_id. (e.g. 'ubuntu64Guest')"

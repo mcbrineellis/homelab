@@ -55,6 +55,7 @@ resource "vsphere_virtual_machine" "zabbix" {
                 ipv4_netmask = var.vm_ipv4_netmask
             }
             ipv4_gateway = var.vm_ipv4_gateway
+            dns_server_list = var.vm_dns_server_list
         }
     }
 
