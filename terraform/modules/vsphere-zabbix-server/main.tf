@@ -57,4 +57,19 @@ resource "vsphere_virtual_machine" "zabbix" {
             ipv4_gateway = var.vm_ipv4_gateway
         }
     }
+
+    connection {
+        host        = var.vm_ipv4_address
+        type        = "ssh"
+        user        = var.ssh_username
+        private_key = file(var.private_key)
+    }
+
+    provisioner "remote-exec" {
+        inline = ["sudo apt update", "sudo apt install python3 -y", "echo Done!"]
+    }
+
+    provisioner "local-exec" {
+        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_username} -i '${var.vm_ipv4_address},' --private-key ${var.private_key} -e 'pub_key=${var.public_key}' ../../ansible/zabbix/zabbix-server-install.yml"
+    }
 }

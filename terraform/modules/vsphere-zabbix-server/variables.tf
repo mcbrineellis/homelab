@@ -62,3 +62,20 @@ variable "vm_domain" {
   type        = string
   description = "The domain suffix of the guest. (e.g. 'lab.hyperact.ca')"
 }
+
+variable "ssh_username" {
+  type        = string
+  description = "The user that we will use to connect up to the guest. (e.g. 'root')"
+}
+
+variable "private_key" {
+  type        = string
+  description = "Location of the private key to connect up to the guest. (e.g. '~/.ssh/id_ed25519')"
+  default     = "~/.ssh/id_ed25519"
+}
+
+variable "public_key" {
+  type        = string
+  description = "Location of the public key to connect up to the guest. (e.g. '~/.ssh/id_ed25519.pub')"
+  default     = "~/.ssh/id_ed25519.pub"
+}

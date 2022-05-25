@@ -35,4 +35,6 @@ module "zabbix-server" {
     vm_ipv4_gateway     = "192.168.1.254"
     vm_host_name        = "zabbix4"
     vm_domain           = "lab.hyperact.ca"
+    ssh_username        = "ubuntu"
+    private_key         = "~/.ssh/id_ed25519"
 }
