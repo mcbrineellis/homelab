@@ -33,6 +33,11 @@ variable "vm_cpu_cores" {
   description = "The number of virtual CPUs cores per socket. (e.g. '1')"
 }
 
+variable "vm_disk0_size" {
+  type        = number
+  description = "The size for the VM's disk0 in GB. (e.g. '40')"
+}
+
 variable "vm_mem_size" {
   type        = number
   description = "The size for the virtual memory in MB. (e.g. '2048')"
@@ -63,6 +68,12 @@ variable "vm_domain" {
   description = "The domain suffix of the guest. (e.g. 'lab.hyperact.ca')"
 }
 
+variable "vm_guest_id" {
+  type        = string
+  description = "The VMware guest_id. (e.g. 'ubuntu64Guest')"
+  default     = "ubuntu64Guest"
+}
+
 variable "ssh_username" {
   type        = string
   description = "The user that we will use to connect up to the guest. (e.g. 'root')"
@@ -78,4 +89,14 @@ variable "public_key" {
   type        = string
   description = "Location of the public key to connect up to the guest. (e.g. '~/.ssh/id_ed25519.pub')"
   default     = "~/.ssh/id_ed25519.pub"
+}
+
+variable "remote_commands" {
+  type        = list
+  description = "A list of commands to be executed by remote-exec after VM deployment."
+}
+
+variable "playbook_path" {
+  type        = string
+  description = "The command to be executed on the system, after VM deployment."
 }

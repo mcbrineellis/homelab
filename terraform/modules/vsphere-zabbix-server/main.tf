@@ -31,7 +31,7 @@ resource "vsphere_virtual_machine" "zabbix" {
     num_cpus          = var.vm_cpu_cores
     memory            = var.vm_mem_size
     firmware          = data.vsphere_virtual_machine.template.firmware
-    guest_id          = "ubuntu64Guest"
+    guest_id          = var.vm_guest_id
 
     network_interface {
         network_id = data.vsphere_network.network.id
@@ -40,7 +40,7 @@ resource "vsphere_virtual_machine" "zabbix" {
     disk {
         label = "disk0"
         thin_provisioned = true
-        size = 40
+        size = var.vm_disk0_size
     }
 
     clone {
@@ -66,10 +66,10 @@ resource "vsphere_virtual_machine" "zabbix" {
     }
 
     provisioner "remote-exec" {
-        inline = ["sudo apt update", "sudo apt install python3 -y", "echo Done!"]
+        inline = var.remote_commands
     }
 
     provisioner "local-exec" {
-        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_username} -i '${var.vm_ipv4_address},' --private-key ${var.private_key} -e 'pub_key=${var.public_key}' ../../ansible/zabbix/zabbix-server-install.yml"
+        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_username} -i '${var.vm_ipv4_address},' --private-key ${var.private_key} -e 'pub_key=${var.public_key}' ${var.playbook_path}"
     }
 }

@@ -28,6 +28,7 @@ module "zabbix-server" {
     vsphere_datastore   = "ssd"
     vsphere_folder      = "terraform"
     template_name       = "linux-ubuntu-20.04-lts-v0428.1957"
+    vm_guest_id         = "ubuntu64Guest"
     vm_cpu_cores        = 1
     vm_mem_size         = 2048
     vm_ipv4_address     = "192.168.1.201"
