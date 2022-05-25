@@ -31,7 +31,7 @@ resource "vsphere_virtual_machine" "zabbix" {
     num_cpus          = var.vm_cpu_cores
     memory            = var.vm_mem_size
     firmware          = data.vsphere_virtual_machine.template.firmware
-    guest_id          = "ubuntu64Guest"
+    guest_id          = var.vm_guest_id
 
     network_interface {
         network_id = data.vsphere_network.network.id
@@ -40,7 +40,7 @@ resource "vsphere_virtual_machine" "zabbix" {
     disk {
         label = "disk0"
         thin_provisioned = true
-        size = 100
+        size = var.vm_disk0_size
     }
 
     clone {
@@ -56,5 +56,20 @@ resource "vsphere_virtual_machine" "zabbix" {
             }
             ipv4_gateway = var.vm_ipv4_gateway
         }
+    }
+
+    connection {
+        host        = var.vm_ipv4_address
+        type        = "ssh"
+        user        = var.ssh_username
+        private_key = file(var.private_key)
+    }
+
+    provisioner "remote-exec" {
+        inline = var.remote_commands
+    }
+
+    provisioner "local-exec" {
+        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_username} -i '${var.vm_ipv4_address},' --private-key ${var.private_key} -e 'pub_key=${var.public_key}' ${var.playbook_path}"
     }
 }
