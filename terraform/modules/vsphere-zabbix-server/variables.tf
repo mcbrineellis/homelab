@@ -18,14 +18,14 @@ variable "vsphere_datastore" {
   description = "The name of the target vSphere datastore. (e.g. 't0-ssd')"
 }
 
-variable "template_name" {
-  type        = string
-  description = "Name of the source template VM. (e.g. 'linux-ubuntu-20.04-lts-v0428.1957')"
-}
-
 variable "vsphere_folder" {
   type        = string
   description = "The name of the vSphere folder to deploy into. (e.g. 'terraform')"
+}
+
+variable "template_name" {
+  type        = string
+  description = "Name of the source template VM. (e.g. 'linux-ubuntu-20.04-lts-v0428.1957')"
 }
 
 variable "vm_cpu_cores" {

@@ -21,14 +21,14 @@ provider "vsphere" {
 }
 
 module "zabbix-server" {
-    source = "../modules/terraform-vsphere-zabbix-server"
+    source = "../modules/vsphere-zabbix-server"
     vsphere_datacenter  = "lab"
     vsphere_cluster     = "labcl"
     vsphere_network     = "mgmt"
     vsphere_datastore   = "ssd"
-    template_name       = "linux-ubuntu-20.04-lts-v0428.1957"
     vsphere_folder      = "terraform"
-    vm_cpu_cores           = 1
+    template_name       = "linux-ubuntu-20.04-lts-v0428.1957"
+    vm_cpu_cores        = 1
     vm_mem_size         = 2048
     vm_ipv4_address     = "192.168.1.201"
     vm_ipv4_netmask     = "24"
