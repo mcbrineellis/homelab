@@ -1,0 +1,6 @@
+---
+ - name: Install Zabbix Server
+   become: true
+   hosts: localhost
+   roles:
+    - role: community.zabbix.zabbix_server
