@@ -41,8 +41,8 @@
       postgresql_databases:
         - name: zabbix
       postgresql_users:
-        - name: zabbixboy
-          password: secretboy
+        - name: "{{ zabbix_server_dbuser }}"
+          password: "{{ zabbix_server_dbpassword }}"
 
 - name: Install Zabbix Server
   become: true
@@ -53,8 +53,8 @@
       zabbix_server_database_long: postgresql
       zabbix_server_dbport: 5432
       zabbix_server_dbname: zabbix
-      zabbix_server_dbuser: zabbixboy
-      zabbix_server_dbpassword: secretboy
+      zabbix_server_dbuser: "{{ zabbix_server_dbuser }}"
+      zabbix_server_dbpassword: "{{ zabbix_server_dbpassword }}"
 
 - name: Install Zabbix Web Frontend
   become: true
@@ -74,15 +74,13 @@
         state: present
   roles:
     - role: community.zabbix.zabbix_web
-      zabbix_api_server_url: zabbix6.lab.hyperact.ca
-      zabbix_url_aliases:
-        - zabbix6.lab.hyperact.ca
-        - 192.168.1.201
-      zabbix_timezone: America/Toronto
-      zabbix_server_name: zabbix6.lab.hyperact.ca
+      zabbix_api_server_url: "{{ zabbix_server_name }}"
+      zabbix_url_aliases: "{{ zabbix_url_aliases }}"
+      zabbix_timezone: "{{ zabbix_timezone }}"
+      zabbix_server_name: "{{ zabbix_server_name }}"
       zabbix_server_database: pgsql
       zabbix_server_database_long: postgresql
       zabbix_server_dbport: 5432
       zabbix_server_dbname: zabbix
-      zabbix_server_dbuser: zabbixboy
-      zabbix_server_dbpassword: secretboy
+      zabbix_server_dbuser: "{{ zabbix_server_dbuser }}"
+      zabbix_server_dbpassword: "{{ zabbix_server_dbpassword }}"
