@@ -1,0 +1,55 @@
+---
+- name: Install acl
+  become: true
+  hosts: all
+  tasks: 
+    - name: Install acl
+      ansible.builtin.package:
+        name: acl
+        state: present
+
+- name: Install PostgreSQL Server
+  become: true
+  hosts: all
+  roles:
+    - role: geerlingguy.postgresql
+      postgresql_databases:
+        - name: zabbix
+      postgresql_users:
+        - name: "{{ zabbix_server_dbuser }}"
+          password: "{{ zabbix_server_dbpassword }}"
+
+- name: Install Zabbix Server
+  become: true
+  hosts: all
+  roles:
+    - role: community.zabbix.zabbix_server
+      zabbix_server_version: 4.0
+      zabbix_server_database: pgsql
+      zabbix_server_database_long: postgresql
+      zabbix_server_dbport: 5432
+      zabbix_server_dbname: zabbix
+
+- name: Install Zabbix Web Frontend
+  become: true
+  hosts: all
+  pre_tasks:
+    - name: Install php-fpm
+      apt:
+        name: php-fpm
+        state: present
+    - name: Install the Apache web server
+      apt:
+        name: apache2
+        state: present
+    - name: Enable the Apache2 module mod_rewrite
+      community.general.apache2_module:
+        name: rewrite
+        state: present
+  roles:
+    - role: community.zabbix.zabbix_web
+      zabbix_web_version: 4.0
+      zabbix_server_database: pgsql
+      zabbix_server_database_long: postgresql
+      zabbix_server_dbport: 5432
+      zabbix_server_dbname: zabbix
