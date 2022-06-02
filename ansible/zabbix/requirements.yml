@@ -1,0 +1,11 @@
+---
+roles:
+  - name: geerlingguy.postgresql
+  - name: geerlingguy.apache
+  - name: geerlingguy.php
+  - name: geerlingguy.apache-php-fpm
+collections:
+  - name: ansible.posix
+  - name: community.general
+  - name: community.postgresql
+  - name: community.zabbix
