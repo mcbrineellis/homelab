@@ -27,7 +27,7 @@ module "zabbix-server" {
     vsphere_network     = "mgmt"
     vsphere_datastore   = "ssd"
     vsphere_folder      = "terraform"
-    template_name       = "linux-ubuntu-20.04-lts-v0602.1407"
+    template_name       = "linux-ubuntu-20.04-lts-v0602.1820"
     vm_guest_id         = "ubuntu64Guest"
     vm_cpu_cores        = 1
     vm_mem_size         = 2048
@@ -38,7 +38,7 @@ module "zabbix-server" {
     vm_dns_server_list  = [
         "192.168.1.254"
     ]
-    vm_host_name        = "zabbix-4.0"
+    vm_host_name        = "zabbix-60"
     vm_domain           = "lab.hyperact.ca"
     ssh_username        = "ubuntu"
     private_key         = "~/.ssh/id_ed25519"
@@ -48,5 +48,5 @@ module "zabbix-server" {
         "sudo apt install python3 -y",
         "echo Done!"
     ]
-    playbook_path       = "../../ansible/zabbix/zabbix-server-4.0.yml"
+    playbook_path       = "../../ansible/zabbix/zabbix-server-6.0.yml"
 }
