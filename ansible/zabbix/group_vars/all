@@ -1,9 +1,6 @@
 ---
 # variable default values
 zabbix_server_name: zabbix.lab.hyperact.ca
-zabbix_url_aliases:
-  - zabbix.lab.hyperact.ca
-  - 192.168.1.201
 zabbix_timezone: America/Toronto
 zabbix_server_database: pgsql
 zabbix_server_database_long: postgresql
