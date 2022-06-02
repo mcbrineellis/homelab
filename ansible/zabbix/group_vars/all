@@ -1,9 +1,7 @@
 ---
 # variable default values
-zabbix_server_name: zabbix.lab.hyperact.ca
+zabbix_server_name: zabbix
 zabbix_timezone: America/Toronto
 zabbix_server_database: pgsql
 zabbix_server_database_long: postgresql
 zabbix_server_dbport: 5432
-zabbix_server_dbuser: zabbixboy
-zabbix_server_dbpassword: secretboy
