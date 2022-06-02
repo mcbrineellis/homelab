@@ -27,7 +27,7 @@ module "zabbix-server" {
     vsphere_network     = "mgmt"
     vsphere_datastore   = "ssd"
     vsphere_folder      = "terraform"
-    template_name       = "linux-ubuntu-20.04-lts-v0428.1957"
+    template_name       = "linux-ubuntu-20.04-lts-v0602.1407"
     vm_guest_id         = "ubuntu64Guest"
     vm_cpu_cores        = 1
     vm_mem_size         = 2048
