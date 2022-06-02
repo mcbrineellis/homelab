@@ -38,7 +38,7 @@ module "zabbix-server" {
     vm_dns_server_list  = [
         "192.168.1.254"
     ]
-    vm_host_name        = "zabbix4"
+    vm_host_name        = "zabbix-4.0"
     vm_domain           = "lab.hyperact.ca"
     ssh_username        = "ubuntu"
     private_key         = "~/.ssh/id_ed25519"
@@ -48,5 +48,5 @@ module "zabbix-server" {
         "sudo apt install python3 -y",
         "echo Done!"
     ]
-    playbook_path       = "../../ansible/zabbix/zabbix4.yml"
+    playbook_path       = "../../ansible/zabbix/zabbix-server-4.0.yml"
 }
