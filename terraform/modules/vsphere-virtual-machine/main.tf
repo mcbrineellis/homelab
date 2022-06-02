@@ -71,6 +71,6 @@ resource "vsphere_virtual_machine" "zabbix" {
     }
 
     provisioner "local-exec" {
-        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_username} -i '${var.vm_ipv4_address},' --private-key ${var.private_key} -e 'pub_key=${var.public_key}' ${var.playbook_path}"
+        command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ${var.ssh_username} -i '${var.vm_ipv4_address},' --private-key ${var.private_key} -e 'pub_key=${var.public_key} zabbix_server_name=${var.vm_host_name}.${var.vm_domain}' ${var.playbook_path}"
     }
 }
