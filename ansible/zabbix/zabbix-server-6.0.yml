@@ -47,6 +47,8 @@
 - name: Install Zabbix Server
   become: true
   hosts: all
+  vars:
+    zabbix_server_name: "{{ server_name }}"
   roles:
     - role: community.zabbix.zabbix_server
       zabbix_server_version: 6.0
@@ -58,6 +60,8 @@
 - name: Install Zabbix Web Frontend
   become: true
   hosts: all
+  vars:
+    zabbix_server_name: "{{ server_name }}"
   pre_tasks:
     - name: Install php-fpm
       apt:

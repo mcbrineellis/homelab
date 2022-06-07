@@ -5,3 +5,5 @@ zabbix_timezone: America/Toronto
 zabbix_server_database: pgsql
 zabbix_server_database_long: postgresql
 zabbix_server_dbport: 5432
+zabbix_server_dbuser: zabbixdbuser
+zabbix_server_dbpassword: zabbixdbpassword

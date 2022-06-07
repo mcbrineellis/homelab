@@ -101,7 +101,7 @@ variable "remote_commands" {
   description = "A list of commands to be executed by remote-exec after VM deployment."
 }
 
-variable "playbook_path" {
+variable "ansible_playbook" {
   type        = string
   description = "The command to be executed on the system, after VM deployment."
 }

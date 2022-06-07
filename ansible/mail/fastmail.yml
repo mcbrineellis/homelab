@@ -1,0 +1,128 @@
+---
+- name: Install postfix mail server
+  become: true
+  hosts: all
+  tasks: 
+
+    - name: Install postfix and cyrus-sasl
+      ansible.builtin.package:
+        name:
+          - postfix
+          - cyrus-sasl
+          - cyrus-sasl-plain
+        state: present
+
+    - name: Update postfix config
+      ansible.builtin.template:
+        src: templates/main.cf.j2
+        dest: /etc/postfix/main.cf
+
+    - name: Enable smtp and smtp-submission services on firewalld
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        immediate: yes
+        state: enabled
+      with_items:
+        - smtp
+        - smtp-submission
+
+    - name: Create postfix mynetworks file
+      ansible.builtin.copy:
+        content: "{% for item in mynetworks %}{{ item + '\n'}}{% endfor %}"
+        dest: /etc/postfix/mynetworks
+
+- name: Install OpenDKIM for mail signing
+  become: true
+  hosts: all
+  tasks:
+
+    - name: Install opendkim and openssl
+      ansible.builtin.package:
+        name:
+          - opendkim
+          - openssl
+        state: present
+    
+    - name: Create folders for keys
+      ansible.builtin.file:
+        path: "/etc/opendkim/keys/{{ my_domain }}"
+        state: directory
+        owner: opendkim
+        group: opendkim
+    
+    - name: Generate keys
+      ansible.builtin.command:
+        chdir: "/etc/opendkim/keys/{{ my_domain }}"
+        cmd: "opendkim-genkey -D /etc/opendkim/keys/{{ my_domain }}/ -s {{ selector }} -d {{ my_domain }} --bits=2048"
+        creates: "/etc/opendkim/keys/{{ my_domain }}/{{ selector }}.private"
+      notify:
+        - Restart postfix
+    
+    - name: Set permissions for opendkim folders
+      ansible.builtin.file:
+        path: /etc/opendkim/keys
+        recurse: yes
+        owner: opendkim
+        group: opendkim
+    
+    - name: Update opendkim config
+      ansible.builtin.template:
+        src: templates/opendkim.conf.j2
+        dest: /etc/opendkim.conf
+      notify:
+        - Restart postfix
+
+    - name: Update signing table
+      ansible.builtin.copy:
+        content: "*@{{ my_domain }} {{ selector }}._domainkey.{{ my_domain }}"
+        dest: /etc/opendkim/SigningTable
+      notify:
+        - Restart postfix
+
+    - name: Update key table
+      ansible.builtin.copy:
+        content: "{{ selector }}._domainkey.{{ my_domain }} {{ my_domain }}:{{ selector }}:/etc/opendkim/keys/{{ my_domain }}/{{ selector }}.private"
+        dest: /etc/opendkim/KeyTable
+      notify:
+        - Restart postfix
+
+    - name: Set variable for wildcard version of domain
+      ansible.builtin.set_fact:
+        wildcard_domain: "*.{{ my_domain }}"
+
+    - name: Configure trusted hosts
+      ansible.builtin.lineinfile:
+        path: /etc/opendkim/TrustedHosts
+        regexp: "^#?{{ item | regex_escape() }}"
+        line: "{{ item }}"
+      loop: "{{ mynetworks + [ wildcard_domain ] }}"
+      notify:
+        - Restart postfix
+
+    - name: Enable and start opendkim
+      ansible.builtin.service:
+        name: "opendkim"
+        state: started
+        enabled: yes
+      failed_when: no
+      notify:
+        - Restart postfix
+
+    - name: "Slurp public key"
+      ansible.builtin.slurp:
+        src: "/etc/opendkim/keys/{{ my_domain }}/{{ selector }}.txt"
+      register: opendkim_public_keys
+
+    - name: "Display public key"
+      ansible.builtin.debug:
+        msg:
+          - "------------- {{ opendkim_public_keys['source'] }} -------------"
+          - "{{ opendkim_public_keys['content'] | b64decode | replace ('\"\n\t  \"','') | replace('\t',' ') | replace('\n',' ') }}"
+          - "------------- {{ opendkim_public_keys['source'] }} -------------"
+    
+  handlers:
+    - name: Restart postfix
+      ansible.builtin.service:
+        name: postfix
+        state: restarted
